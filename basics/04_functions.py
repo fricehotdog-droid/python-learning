@@ -23,6 +23,7 @@ def add(a: int, b: int) -> int:
     """两数相加的简短说明。文档字符串（docstring）可用 help() 查看。"""
     return a + b
 
+
 print("=== 基本函数 ===")
 print("add(3, 5) =", add(3, 5))
 
@@ -33,11 +34,14 @@ print("add(3, 5) =", add(3, 5))
 def greet(name: str, greeting: str = "Hello", punctuation: str = "!") -> str:
     return f"{greeting}, {name}{punctuation}"
 
+
 print("\n=== 默认参数 ===")
-print(greet("Alice"))                            # 使用默认值
-print(greet("Bob", "Hi"))                         # 位置参数
-print(greet("Carol", punctuation="."))            # 关键字参数
-print(greet("Dave", greeting="Hey", punctuation="?"))   # 同时使用多个关键字参数
+print(greet("Alice"))  # 使用默认值
+print(greet("Bob", "Hi"))  # 位置参数
+print(greet("Carol", punctuation="."))  # 关键字参数
+print(greet("Dave", greeting="Hey", punctuation="?"))  # 同时使用多个关键字参数
+
+
 # greet(name="Eve", "Hello")                     # ❌ 语法错误：位置参数必须在关键字参数之前
 
 
@@ -49,30 +53,35 @@ def log(level: str, *messages: str, **context: object) -> None:
     """可变位置参数 + 可变关键字参数"""
     print(f"[{level}]", " ".join(messages), "|", context)
 
+
 print("\n=== *args / **kwargs ===")
 log("INFO", "user", "logged", "in", user_id=1, ip="127.0.0.1")
-
 
 # ============================================================
 # 4. 一等公民：函数作为参数 / 返回值
 # ============================================================
 print("\n=== 函数是一等公民 ===")
-def apply(value: int, func) -> int:    # func 没有类型提示，演示动态类型
+
+
+def apply(value: int, func) -> int:  # func 没有类型提示，演示动态类型
     return func(value)
+
 
 print("apply(5, lambda x: x * 2) =", apply(5, lambda x: x * 2))
 print("apply(5, lambda x: x ** 2) =", apply(5, lambda x: x ** 2))
+
 
 # 高阶函数：返回函数
 def make_multiplier(factor: int):
     def multiplier(x: int) -> int:
         return x * factor
+
     return multiplier
+
 
 double = make_multiplier(2)
 triple = make_multiplier(3)
 print("double(5) =", double(5), "triple(5) =", triple(5))
-
 
 # ============================================================
 # 5. lambda 表达式
@@ -85,24 +94,27 @@ print("adder(3, 4) =", adder(3, 4))
 
 # 常用于排序、过滤等场景
 items = [(1, "b"), (2, "a"), (3, "c")]
-items.sort(key=lambda x: x[1])   # 按第二个元素排序
+items.sort(key=lambda x: x[1])  # 按第二个元素排序
 print("按字母排序:", items)
-
 
 # ============================================================
 # 6. 作用域与闭包
 # ============================================================
 print("\n=== 作用域与闭包 ===")
-message = "global"           # 全局变量
+message = "global"  # 全局变量
+
 
 def outer():
-    message = "enclosing"     # 闭包变量
+    message = "enclosing"  # 闭包变量
+
     def inner():
         # nonlocal message   # 如果要修改闭包变量，需要加 nonlocal
-        return message        # 读取没问题
+        return message  # 读取没问题
+
     return inner
 
-print("outer()() =", outer()())   # 仍然是 "enclosing"
+
+print("outer()() =", outer()())  # 仍然是 "enclosing"
 
 # LEGB 规则：Local → Enclosing → Global → Built-in
 # 类似于 Java 的"就近原则"，但作用域规则比 Java 更明确
@@ -112,15 +124,18 @@ print("outer()() =", outer()())   # 仍然是 "enclosing"
 # 7. 参数解包（Unpacking）
 # ============================================================
 print("\n=== 参数解包 ===")
-def show(a, b, c):
-    print(f"a={a}, b={b}, c={c}")
 
-args = [1, 2, 3]
-show(*args)                   # 相当于 show(1, 2, 3)
 
-kwargs = {"a": 1, "b": 2, "c": 3}
-show(**kwargs)                # 相当于 show(a=1, b=2, c=3)
+def show(a, b, c, d, e):
+    print(f"a={a}, b={b}, c={c}, d={d}, e={e}"
+          f"")
 
+
+args = [1, 2, 3, 3, 4]
+show(*args)  # 相当于 show(1, 2, 3)
+
+kwargs = {"a": 1, "b": 2, "c": 3, "a": 1, "a": 2, "a": 4, "d": 1, "d": 5, "e": 6}
+show(**kwargs)  # 相当于 show(a=1, b=2, c=3)
 
 # ============================================================
 # 小结

@@ -20,7 +20,7 @@ print("=== list（≈ ArrayList）===")
 nums = [1, 2, 3, 4, 5]
 nums.append(6)  # 末尾追加 ≈ list.add(e)
 nums.insert(0, 0)  # 在指定位置插入 ≈ list.add(0, e)
-nums.extend([7, 8])  # 合并另一个 list ≈ list.addAll(other)
+nums.extend([6, 7, 8])  # 合并另一个 list ≈ list.addAll(other)
 nums.remove(3)  # 删除第一个匹配的元素
 print("nums =", nums)
 print("len(nums) =", len(nums))  # 类似 list.size()
@@ -93,6 +93,8 @@ print("square_map =", square_map)
 defaults = {"theme": "dark", "lang": "en"}
 overrides = {"lang": "zh-CN"}
 config = defaults | overrides
+print("merged config =", config)
+config = overrides | defaults
 print("merged config =", config)
 
 # ============================================================

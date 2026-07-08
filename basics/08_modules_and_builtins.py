@@ -8,7 +8,6 @@
 4. 装饰器入门：@ 语法糖（对比 Java 注解 + AOP）
 """
 
-
 # ============================================================
 # 1. 模块与包
 # ============================================================
@@ -24,13 +23,12 @@ import math
 from math import sqrt, pi
 import datetime as dt
 
-print("math.sqrt(16) =", math.sqrt(16))            # 4.0
-print("sqrt(25) =", sqrt(25))                      # 5.0（直接使用名字）
+print("math.sqrt(16) =", math.sqrt(16))  # 4.0
+print("sqrt(25) =", sqrt(25))  # 5.0（直接使用名字）
 print("pi =", pi)
 
 now = dt.datetime.now()
 print("当前时间 =", now)
-
 
 # ============================================================
 # 2. 常用内建函数
@@ -47,14 +45,13 @@ evens = list(filter(lambda x: x % 2 == 0, nums))
 print("filter ->", evens)
 
 # any / all: 短路逻辑
-print("any > 4:", any(x > 4 for x in nums))   # 至少一个 > 4
-print("all > 0:", all(x > 0 for x in nums))   # 全部 > 0
+print("any > 4:", any(x > 4 for x in nums))  # 至少一个 > 4
+print("all > 0:", all(x > 0 for x in nums))  # 全部 > 0
 
 # zip: 把多个可迭代对象"拉链"到一起
 a = [1, 2, 3]
 b = ["a", "b", "c"]
-print("zip:", list(zip(a, b)))                # [(1, 'a'), (2, 'b'), (3, 'c')]
-
+print("zip:", list(zip(a, b)))  # [(1, 'a'), (2, 'b'), (3, 'c')]
 
 # ============================================================
 # 3. 常用标准库一览
@@ -66,11 +63,13 @@ print("now =", now, "iso =", now.isoformat())
 
 # os —— 操作系统交互
 import os
-print("cwd =", os.getcwd())                   # 当前工作目录
+
+print("cwd =", os.getcwd())  # 当前工作目录
 print("env PATH 存在?", "PATH" in os.environ)
 
 # sys —— Python 解释器
 import sys
+
 print("Python 版本 =", sys.version.split()[0])
 print("平台 =", sys.platform)
 
@@ -93,7 +92,6 @@ Point = namedtuple("Point", ["x", "y"])
 p = Point(3, 4)
 print("Point =", p, "x =", p.x)
 
-
 # ============================================================
 # 4. 装饰器（Decorator）入门
 # ============================================================
@@ -105,27 +103,34 @@ print("\n=== 装饰器 ===")
 import functools
 import time
 
+
 def timer(func):
     """打印函数执行时间的装饰器"""
-    @functools.wraps(func)              # 保留原函数的 __name__、__doc__
+
+    @functools.wraps(func)  # 保留原函数的 __name__、__doc__
     def wrapper(*args, **kwargs):
         start = time.perf_counter()
         result = func(*args, **kwargs)
         elapsed = (time.perf_counter() - start) * 1000
         print(f"  [{func.__name__}] 耗时 {elapsed:.3f} ms")
         return result
+
     return wrapper
+
 
 @timer
 def slow_sum(n: int) -> int:
     """计算 1..n 的和"""
     return sum(range(1, n + 1))
 
+
 slow_sum(100000)
+
 
 # 4.2 带参数的装饰器
 def repeat(times: int):
     """把函数调用 times 次"""
+
     def decorator(func):
         @functools.wraps(func)
         def wrapper(*args, **kwargs):
@@ -133,14 +138,19 @@ def repeat(times: int):
             for _ in range(times):
                 results.append(func(*args, **kwargs))
             return results
+
         return wrapper
+
     return decorator
+
 
 @repeat(3)
 def greet(name: str) -> str:
     return f"Hi, {name}!"
 
+
 print("greet('Alice') =", greet("Alice"))
+
 
 # 4.3 类装饰器：让类实例可以像函数一样被调用
 class CountCalls:
@@ -154,14 +164,15 @@ class CountCalls:
         print(f"  第 {self.count} 次调用 {self.func.__name__}")
         return self.func(*args, **kwargs)
 
+
 @CountCalls
 def hello():
     print("  hello!")
 
-hello()
-hello()
-hello()
 
+hello()
+hello()
+hello()
 
 # ============================================================
 # 5. 虚拟环境与依赖（针对本项目）

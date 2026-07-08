@@ -14,7 +14,6 @@ import json
 import csv
 from pathlib import Path
 
-
 # ============================================================
 # 1. 读取和写入文本文件
 # ============================================================
@@ -36,20 +35,19 @@ print(content, end="")
 
 # 逐行读取
 print("readlines:")
-with sample_path.open("r", encoding="utf-8") as f:   # 显式 open
-    for line in f:                                    # 直接遍历 file 对象即可按行迭代
+with sample_path.open("r", encoding="utf-8") as f:  # 显式 open
+    for line in f:  # 直接遍历 file 对象即可按行迭代
         print("  ", line.rstrip())
 
 # 写入（覆盖）
 sample_path.write_text("覆盖内容\n", encoding="utf-8")
 print("覆盖后:", sample_path.read_text(encoding="utf-8"))
 
-
 # ============================================================
 # 2. 路径处理（pathlib）—— ≈ java.nio.file.Path
 # ============================================================
 print("\n=== pathlib 路径处理 ===")
-p = Path(".") / "subdir" / "data.json"   # 用 / 拼接路径
+p = Path(".") / "subdir" / "data.json"  # 用 / 拼接路径
 print("path =", p)
 print("parent =", p.parent)
 print("name =", p.name)
@@ -57,9 +55,8 @@ print("suffix =", p.suffix)
 print("exists? =", p.exists())
 
 # 常用方法
-sample_path.unlink(missing_ok=True)      # 删除文件，missing_ok=True 不会因为文件不存在而报错
+sample_path.unlink(missing_ok=True)  # 删除文件，missing_ok=True 不会因为文件不存在而报错
 print("删除 demo.txt 后存在?", sample_path.exists())
-
 
 # ============================================================
 # 3. JSON 读写
@@ -93,7 +90,6 @@ print("读回 loaded['name'] =", loaded["name"])
 # 删除示例文件
 json_path.unlink(missing_ok=True)
 
-
 # ============================================================
 # 4. CSV 读写
 # ============================================================
@@ -116,7 +112,6 @@ with csv_path.open("r", encoding="utf-8", newline="") as f:
         print("  ", row)
 
 csv_path.unlink(missing_ok=True)
-
 
 # ============================================================
 # 小结

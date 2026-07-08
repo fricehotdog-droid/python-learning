@@ -58,7 +58,8 @@ class Dog:
 
 print("=== 基本类 ===")
 dog = Dog("旺财", 3)
-print(dog)                          # 走 __str__
+print(dog.species)
+print(dog)  # 走 __str__
 print(dog.bark())
 print("人类年龄 =", dog.human_age)  # 像访问属性一样调用方法
 print(Dog.info())
@@ -74,6 +75,7 @@ class Animal:
     def speak(self) -> str:
         return "..."
 
+
 class Cat(Animal):
     def __init__(self, name: str, color: str):
         # 调用父类构造器：相当于 Java 的 super(name)
@@ -87,11 +89,12 @@ class Cat(Animal):
     def __str__(self) -> str:
         return f"Cat(name={self.name}, color={self.color})"
 
+
 print("\n=== 继承 ===")
 cat = Cat("小花", "白色")
 print(cat)
 print(cat.speak())
-print("isinstance(cat, Animal) =", isinstance(cat, Animal))   # 替代 instanceof
+print("isinstance(cat, Animal) =", isinstance(cat, Animal))  # 替代 instanceof
 print("isinstance(cat, Dog) =", isinstance(cat, Dog))
 
 
@@ -100,17 +103,19 @@ print("isinstance(cat, Dog) =", isinstance(cat, Dog))
 # ============================================================
 class Account:
     def __init__(self, owner: str, balance: float):
-        self.owner = owner                  # 公开
-        self._balance = balance             # 约定：内部使用（单下划线）
-        self.__secret = "haha"              # 名称改写，双下划线开头 → _Account__secret
+        self.owner = owner  # 公开
+        self._balance = balance  # 约定：内部使用（单下划线）
+        self.__secret = "haha"  # 名称改写，双下划线开头 → _Account__secret
 
     def get_balance(self) -> float:
         return self._balance
 
+
 print("\n=== 访问控制 ===")
 acc = Account("Alice", 1000)
-print("owner =", acc.owner)                # OK
-print("balance =", acc._balance)           # 能访问，但约定不要
+print("owner =", acc.owner)  # OK
+print("balance =", acc._balance)  # 能访问，但约定不要
+print("get_balance =", acc.get_balance())
 # print(acc.__secret)                      # ❌ AttributeError
 # 实际名称已被改写：
 print("name mangled ->", acc._Account__secret)
@@ -123,30 +128,34 @@ class A:
     def hello(self) -> str:
         return "A.hello"
 
+
 class B(A):
     def hello(self) -> str:
         return "B.hello"
+
 
 class C(A):
     def hello(self) -> str:
         return "C.hello"
 
+
 # Python 用 C3 线性化算法确定 MRO（方法解析顺序）
 class D(B, C):
     pass
 
+
 print("\n=== 多继承 ===")
 d = D()
-print("d.hello() =", d.hello())         # B 在前，调用 B 的 hello
-print("D.__mro__ =", D.__mro__)         # 打印方法解析顺序
-
+print("d.hello() =", d.hello())  # B 在前，调用 B 的 hello
+print("D.__mro__ =", D.__mro__)  # 打印方法解析顺序
 
 # ============================================================
 # 5. 抽象基类（替代 Java 的 interface / abstract class）
 # ============================================================
 from abc import ABC, abstractmethod
 
-class Shape(ABC):                       # 继承 ABC 表示这是抽象类
+
+class Shape(ABC):  # 继承 ABC 表示这是抽象类
     @abstractmethod
     def area(self) -> float:
         ...
@@ -154,6 +163,7 @@ class Shape(ABC):                       # 继承 ABC 表示这是抽象类
     @abstractmethod
     def perimeter(self) -> float:
         ...
+
 
 class Rectangle(Shape):
     def __init__(self, width: float, height: float):
@@ -164,7 +174,8 @@ class Rectangle(Shape):
         return self.width * self.height
 
     def perimeter(self) -> float:
-        2 * (self.width + self.height)
+        return 2 * (self.width + self.height)
+
 
 print("\n=== 抽象基类 ===")
 rect = Rectangle(3, 4)
@@ -177,18 +188,19 @@ print("面积 =", rect.area())
 # ============================================================
 from dataclasses import dataclass
 
+
 @dataclass
 class Point:
     x: float
     y: float
-    label: str = "origin"               # 可以有默认值
+    label: str = "origin"  # 可以有默认值
+
 
 print("\n=== 数据类 ===")
 p1 = Point(1, 2)
 p2 = Point(1, 2, "p2")
-print("p1 =", p1)                       # 自动 __repr__
-print("p1 == p2:", p1 == Point(1, 2))   # 自动 __eq__
-
+print("p1 =", p1)  # 自动 __repr__
+print("p1 == p2:", p1 == Point(1, 2))  # 自动 __eq__
 
 # ============================================================
 # 小结

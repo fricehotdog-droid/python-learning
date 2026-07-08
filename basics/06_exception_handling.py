@@ -11,7 +11,6 @@
 6. 推荐使用 with 语句管理资源（等价于 Java 的 try-with-resources）。
 """
 
-
 # ============================================================
 # 1. 基本的 try / except
 # ============================================================
@@ -23,10 +22,12 @@
 #   }
 # Python：
 print("=== 基本异常处理 ===")
+
+
 def to_int(s: str) -> int:
     try:
         return int(s)
-    except ValueError as e:               # as e 拿到异常对象
+    except ValueError as e:  # as e 拿到异常对象
         print(f"  转换失败: {e!r}")
         return 0
     else:
@@ -36,14 +37,16 @@ def to_int(s: str) -> int:
         # 无论是否异常都执行，类似 Java 的 finally
         print("  finally 始终执行")
 
+
 print(to_int("123"))
 print(to_int("abc"))
-
 
 # ============================================================
 # 2. 同时捕获多个异常
 # ============================================================
 print("\n=== 同时捕获多个异常 ===")
+
+
 def safe_div(a: str, b: str) -> float:
     try:
         return float(a) / float(b)
@@ -54,54 +57,62 @@ def safe_div(a: str, b: str) -> float:
         print(f"  除数不能为零: {e!r}")
         return 0.0
 
+
 print("safe_div('10', '2') =", safe_div("10", "2"))
 print("safe_div('10', '0') =", safe_div("10", "0"))
 print("safe_div('abc', '2') =", safe_div("abc", "2"))
-
 
 # ============================================================
 # 3. 主动抛异常
 # ============================================================
 print("\n=== raise 抛异常 ===")
+
+
 class InsufficientFundsError(Exception):
     """自定义异常（继承 Exception）"""
+
     def __init__(self, balance: float, amount: float):
         super().__init__(f"余额 {balance} 不足以支付 {amount}")
         self.balance = balance
         self.amount = amount
+
 
 def withdraw(balance: float, amount: float) -> float:
     if amount > balance:
         raise InsufficientFundsError(balance, amount)
     return balance - amount
 
+
 try:
     withdraw(100, 200)
 except InsufficientFundsError as e:
     print(f"  异常: {e}")
 
-
 # ============================================================
 # 4. 重新抛出当前异常
 # ============================================================
 print("\n=== 重新抛出 ===")
+
+
 def process():
     try:
         int("abc")
     except ValueError:
         print("  在 process 中记录日志")
-        raise                    # 重新抛出当前异常，相当于 Java 的 throw;
+        raise  # 重新抛出当前异常，相当于 Java 的 throw;
+
 
 try:
     process()
 except ValueError as e:
     print(f"  外层捕获: {e!r}")
 
-
 # ============================================================
 # 5. with 语句 —— 资源管理（对比 try-with-resources）
 # ============================================================
 print("\n=== with 语句管理资源 ===")
+
+
 # Java 7+ 的 try-with-resources：
 #   try (BufferedReader br = new BufferedReader(new FileReader("x.txt"))) {
 #       return br.readLine();
@@ -122,13 +133,13 @@ class Timer:
     def __exit__(self, exc_type, exc_val, exc_tb):
         import time
         self.elapsed = time.perf_counter() - self.start
-        print(f"  耗时: {self.elapsed*1000:.3f} ms")
-        return False              # False 表示不吞掉异常
+        print(f"  耗时: {self.elapsed * 1000:.3f} ms")
+        return False  # False 表示不吞掉异常
+
 
 with Timer():
     total = sum(range(1, 10000))
     print(f"  sum = {total}")
-
 
 # ============================================================
 # 6. 异常的层级
